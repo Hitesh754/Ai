@@ -13,7 +13,11 @@ import gemini_api
 import plotly.graph_objects as go
 
 # --- Page Config ---
-st.set_page_config(page_title="Meal Planner", layout="wide")
+st.set_page_config(
+    page_title="Meal Planner", 
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 # --- Logging & Env Setup ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -31,7 +35,63 @@ if not GOOGLE_API_KEY:
 # --- Custom CSS ---
 st.markdown("""
 <style>
-    body {background-color: #ffffff;}
+    /* Force light mode */
+    .stApp {
+        background-color: #ffffff !important;
+    }
+    
+    /* Hide Streamlit header, menu, and footer */
+    header[data-testid="stHeader"] {
+        display: none !important;
+    }
+    
+    /* Hide main menu */
+    .css-1rs6os, .css-17ziqus {
+        display: none !important;
+    }
+    
+    /* Hide hamburger menu */
+    button[kind="header"] {
+        display: none !important;
+    }
+    
+    /* Hide deploy button */
+    .css-1x8cf1d, .css-uf99v8 {
+        display: none !important;
+    }
+    
+    /* Hide fork button and toolbar */
+    .css-14xtw13, .css-k0sv6k {
+        display: none !important;
+    }
+    
+    /* Hide GitHub corner banner */
+    .github-corner {
+        display: none !important;
+    }
+    
+    /* Hide footer */
+    footer {
+        display: none !important;
+    }
+    
+    /* Hide "Made with Streamlit" */
+    .css-1v0mbdj, .css-1wrcr25 {
+        display: none !important;
+    }
+    
+    /* Hide red crown and profile elements */
+    .css-1kyxreq, .css-2trqyj, .css-1v3fvcr {
+        display: none !important;
+    }
+    
+    /* Hide ViewerBadge (red crown) */
+    .viewerBadge_container__1QSob {
+        display: none !important;
+    }
+    
+    /* Main content styling */
+    body {background-color: #ffffff !important;}
     .block-container {padding: 2rem;}
     h1, h2, h3, h4 {color: #2c3e50; font-family: 'Helvetica Neue', sans-serif;}
     .stButton > button {
@@ -44,7 +104,33 @@ st.markdown("""
     [data-testid="stMetricLabel"] {font-size: 14px; font-weight: 500; color: #555;}
     .streamlit-expanderHeader {font-weight: bold; color: #2c3e50;}
     hr {border: none; height: 1px; background-color: #e0e0e0;}
+    
+    /* Additional cleanup for deployment elements */
+    .stAlert, .stException {
+        margin-top: 0 !important;
+    }
 </style>
+
+<script>
+// Remove any remaining deployment elements
+setTimeout(function() {
+    // Remove GitHub profile and crown elements
+    const elementsToRemove = [
+        '.viewerBadge_container__1QSob',
+        '.css-1kyxreq',
+        '.css-2trqyj', 
+        '.css-1v3fvcr',
+        '[data-testid="stToolbar"]',
+        '.stDeployButton',
+        'header[data-testid="stHeader"]'
+    ];
+    
+    elementsToRemove.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => el.remove());
+    });
+}, 1000);
+</script>
 """, unsafe_allow_html=True)
 
 # --- App Title ---
