@@ -149,6 +149,18 @@ st.markdown("""
         border: 1px solid #ddd !important;
     }
     
+    /* Ultra aggressive table fixes - try everything */
+    [data-testid="stDataFrame"] * {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    /* Target specific table classes */
+    .dataframe, .dataframe td, .dataframe th {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
     /* Style ALL buttons including form submit buttons */
     .stButton > button, .stFormSubmitButton > button, button[kind="primary"], button[type="submit"] {
         background-color: #4CAF50 !important; 
@@ -299,8 +311,6 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
         paper_bgcolor='white',
         font=dict(color='black')
     )
-    fig_weekly.update_xaxes(tickfont=dict(color='black', size=12))
-    fig_weekly.update_yaxes(tickfont=dict(color='black', size=12))
     st.plotly_chart(fig_weekly, use_container_width=True, config={"displayModeBar": False})
 
 # --- Grocery List ---
