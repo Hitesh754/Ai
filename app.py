@@ -111,53 +111,8 @@ st.markdown("""
         color: #000000 !important;
     }
     
-    /* Fix dataframe tables - force white background and dark text */
-    .stDataFrame, .stDataFrame > div, .stDataFrame table {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    /* Fix dataframe headers and cells */
-    .stDataFrame th, .stDataFrame td {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-        border-color: #ddd !important;
-    }
-    
-    /* Fix dataframe header row */
-    .stDataFrame thead tr {
-        background-color: #f8f9fa !important;
-    }
-    
-    /* Fix dataframe body rows */
-    .stDataFrame tbody tr {
-        background-color: #ffffff !important;
-    }
-    
-    /* More aggressive table fixes */
-    div[data-testid="stDataFrame"], div[data-testid="stDataFrame"] > div,
-    div[data-testid="stDataFrame"] table, div[data-testid="stDataFrame"] tbody,
-    div[data-testid="stDataFrame"] thead {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    /* Force all table cells */
-    div[data-testid="stDataFrame"] td, div[data-testid="stDataFrame"] th {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-        border: 1px solid #ddd !important;
-    }
-    
-    /* Ultra aggressive table fixes - try everything */
-    [data-testid="stDataFrame"] * {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    /* Target specific table classes */
-    .dataframe, .dataframe td, .dataframe th {
-        background-color: #ffffff !important;
+    /* Simple table styling - just make text visible */
+    .stDataFrame {
         color: #000000 !important;
     }
     
