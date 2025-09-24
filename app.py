@@ -32,79 +32,23 @@ if not GOOGLE_API_KEY:
     st.info("For local development: Add GOOGLE_API_KEY to your .env file.")
     st.stop()
 
-# --- Custom CSS ---
+# --- Simple CSS for clean UI ---
 st.markdown("""
 <style>
-    /* Force light mode and basic styling */
     .stApp {
-        background-color: #ffffff !important;
+        background-color: white !important;
     }
-    
-    /* Hide only specific Streamlit branding elements */
-    header[data-testid="stHeader"] {
-        display: none !important;
-    }
-    
-    /* Hide footer links */
-    footer {
-        display: none !important;
-    }
-    
-    /* Hide "Made with Streamlit" */
-    .css-1v0mbdj, .css-1wrcr25 {
-        display: none !important;
-    }
-    
-    /* Minimal safe hiding - only specific elements */
-    .viewerBadge_container__1QSob,
-    [data-testid="stToolbar"],
-    a[href*="streamlit.io"] {
-        display: none !important;
-    }
-    
-    /* Main content styling */
-    body {background-color: #ffffff !important;}
-    .block-container {padding: 2rem;}
-    h1, h2, h3, h4 {color: #2c3e50; font-family: 'Helvetica Neue', sans-serif;}
     .stButton > button {
-        background-color: #4CAF50; color: white; border: none; border-radius: 12px;
-        padding: 0.6rem 1.2rem; font-size: 16px; font-weight: 600; transition: 0.3s;
+        background-color: #4CAF50; 
+        color: white; 
+        border-radius: 8px;
+        border: none;
+        padding: 0.5rem 1rem;
     }
-    .stButton > button:hover {background-color: #45a049; transform: scale(1.02);}
-    .stDataFrame {border-radius: 12px; border: 1px solid #ddd; box-shadow: 0px 2px 6px rgba(0,0,0,0.05);}
-    [data-testid="stMetricValue"] {font-size: 22px; font-weight: 700; color: #2c3e50;}
-    [data-testid="stMetricLabel"] {font-size: 14px; font-weight: 500; color: #555;}
-    .streamlit-expanderHeader {font-weight: bold; color: #2c3e50;}
-    hr {border: none; height: 1px; background-color: #e0e0e0;}
-    
-    /* Additional cleanup for deployment elements */
-    .stAlert, .stException {
-        margin-top: 0 !important;
+    .stButton > button:hover {
+        background-color: #45a049;
     }
 </style>
-
-<script>
-// Minimal safe element removal
-function hideStreamlitBranding() {
-    // Only hide specific branding elements
-    const elementsToHide = [
-        '.viewerBadge_container__1QSob',
-        '[data-testid="stToolbar"]',
-        'a[href*="streamlit.io"]'
-    ];
-    
-    elementsToHide.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => {
-            if (el) el.style.display = 'none';
-        });
-    });
-}
-
-// Run once
-hideStreamlitBranding();
-setTimeout(hideStreamlitBranding, 1000);
-</script>
 """, unsafe_allow_html=True)
 
 # --- App Title ---
