@@ -32,9 +32,20 @@ if not GOOGLE_API_KEY:
     st.info("For local development: Add GOOGLE_API_KEY to your .env file.")
     st.stop()
 
-# --- Simple green buttons only ---
+# --- Hide top menu and style buttons ---
 st.markdown("""
 <style>
+    /* Hide top header/menu */
+    header[data-testid="stHeader"] {
+        display: none !important;
+    }
+    
+    /* Add padding to compensate for hidden header */
+    .main {
+        padding-top: 1rem !important;
+    }
+    
+    /* Green buttons */
     .stButton > button, .stFormSubmitButton > button {
         background-color: #4CAF50;
         color: white;
