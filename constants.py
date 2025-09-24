@@ -1,12 +1,10 @@
 import os
 from dotenv import load_dotenv
-
+import streamlit as st
 
 # Load environment variables from .env file
-load_dotenv()
-
-GOOGLE_API_KEY = os.getenv("google_api_key")
-USDA_API_KEY = os.getenv("usda_api_key")
+GOOGLE_API_KEY = st.secrets.get("google_api_key")
+USDA_API_KEY = st.secrets.get("usda_api_key")
 USDA_BASE_URL = "https://api.nal.usda.gov/fdc/v1/foods/search"
 EXAMPLE_MEAL_STRUCTURE = '''{
 

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import requests
 import logging
 from datetime import datetime
+import streamlit as st
 
 # Configure logging to both console and file
 log_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
@@ -22,8 +23,8 @@ file_handler.setFormatter(log_formatter)
 log.addHandler(file_handler)
 
 # Load environment variables
-load_dotenv()
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GOOGLE_API_KEY = st.secrets.get("google_api_key")
+
 
 if not GOOGLE_API_KEY:
     log.error("GOOGLE_API_KEY not found.")

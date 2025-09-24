@@ -20,8 +20,8 @@ st.set_page_config(page_title="Meal Planner", layout="wide")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 log = logging.getLogger(__name__)
 
-load_dotenv()
-GOOGLE_API_KEY = os.getenv("google_api_key")
+GOOGLE_API_KEY = st.secrets.get("google_api_key")
+
 
 if not GOOGLE_API_KEY:
     st.error("⚠️ `google_api_key` not found in environment variables.")
