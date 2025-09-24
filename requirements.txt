@@ -1,11 +1,10 @@
 # requirements.txt
-streamlit
+streamlit>=1.28.0
 pillow
 pandas
 matplotlib
 python-dotenv
 requests
-google-genai==1.7.0
-fuzzywuzzy 
-python-Levenshtein
+google-generativeai
+fuzzywuzzy[speedup]
 plotly

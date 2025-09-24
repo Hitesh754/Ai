@@ -16,7 +16,8 @@ log = logging.getLogger(__name__)
 
 
 if not GOOGLE_API_KEY:
-    st.error("❌ Google API key ('google_api_key') not found in .env file")
+    st.error("❌ Google API key ('google_api_key') not found.")
+    st.info("Please configure your API key in Streamlit secrets or .env file.")
     st.stop()
 
 if not USDA_API_KEY:

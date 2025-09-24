@@ -5,7 +5,6 @@ import re
 import logging
 import pandas as pd
 import streamlit as st
-from dotenv import load_dotenv
 
 # Custom modules
 import utils
@@ -20,11 +19,13 @@ st.set_page_config(page_title="Meal Planner", layout="wide")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 log = logging.getLogger(__name__)
 
-GOOGLE_API_KEY = st.secrets.get("google_api_key")
-
+# Import API key from constants (handles both local and deployment scenarios)
+from constants import GOOGLE_API_KEY
 
 if not GOOGLE_API_KEY:
-    st.error("⚠️ `google_api_key` not found in environment variables.")
+    st.error("⚠️ `google_api_key` not found. Please configure it in Streamlit secrets or .env file.")
+    st.info("For Streamlit Cloud: Add your API key in the secrets management section.")
+    st.info("For local development: Add GOOGLE_API_KEY to your .env file.")
     st.stop()
 
 # --- Custom CSS ---
