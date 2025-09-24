@@ -35,42 +35,17 @@ if not GOOGLE_API_KEY:
 # --- Custom CSS ---
 st.markdown("""
 <style>
-    /* Force light mode */
+    /* Force light mode and basic styling */
     .stApp {
         background-color: #ffffff !important;
     }
     
-    /* Hide Streamlit header, menu, and footer */
+    /* Hide only specific Streamlit branding elements */
     header[data-testid="stHeader"] {
         display: none !important;
     }
     
-    /* Hide main menu */
-    .css-1rs6os, .css-17ziqus {
-        display: none !important;
-    }
-    
-    /* Hide hamburger menu */
-    button[kind="header"] {
-        display: none !important;
-    }
-    
-    /* Hide deploy button */
-    .css-1x8cf1d, .css-uf99v8 {
-        display: none !important;
-    }
-    
-    /* Hide fork button and toolbar */
-    .css-14xtw13, .css-k0sv6k {
-        display: none !important;
-    }
-    
-    /* Hide GitHub corner banner */
-    .github-corner {
-        display: none !important;
-    }
-    
-    /* Hide footer */
+    /* Hide footer links */
     footer {
         display: none !important;
     }
@@ -80,97 +55,10 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Hide red crown and profile elements - COMPREHENSIVE */
-    .css-1kyxreq, .css-2trqyj, .css-1v3fvcr {
-        display: none !important;
-    }
-    
-    /* Hide ViewerBadge (red crown) - ALL VARIANTS */
+    /* Minimal safe hiding - only specific elements */
     .viewerBadge_container__1QSob,
-    .viewerBadge_link__1S137,
     [data-testid="stToolbar"],
-    [data-testid="manage-app-button"],
-    .stToolbar,
-    .stDeployButton,
-    .css-vk3wp9,
-    .css-12oz5g7,
-    .css-1n76uvr,
-    .css-1wbqy5l {
-        display: none !important;
-    }
-    
-    /* STREAMLIT CLOUD SPECIFIC - Hide deployment elements */
-    .stAppViewContainer > div:last-child,
-    .stApp > div:last-child,
-    div[data-testid="stSidebar"] + div + div,
-    .main > div:last-child,
-    .stAppEmbeddingId-root div:last-child {
-        display: none !important;
-    }
-    
-    /* Hide Streamlit Cloud footer and profile */
-    .css-1rs6os.e1fqkh3o3,
-    .css-1d391kg,
-    .css-18ni7ap.e1fqkh3o1,
-    .css-qrbaxs,
-    .css-1inwz65.e1fqkh3o4,
-    .css-1lcbmhc.e1fqkh3o10,
-    .css-1outpf7.e1fqkh3o11 {
-        display: none !important;
-    }
-    
-    /* Hide "Made with Streamlit" cloud version */
-    a[href*="streamlit.io"],
-    a[target="_blank"][href*="streamlit"],
-    .css-cio0fg,
-    .css-1fb8w7d {
-        display: none !important;
-    }
-    
-    /* Hide cloud-specific toolbar */
-    .toolbar,
-    .stAppToolbar,
-    [class*="toolbar"],
-    [class*="Toolbar"] {
-        display: none !important;
-    }
-    
-    /* Hide bottom status bar and profile - SPECIFIC ONLY */
-    .stStatusWidget,
-    .css-1dp5vir,
-    .css-1544g2n,
-    .css-1d391kg,
-    .css-18ni7ap,
-    .css-qrbaxs {
-        display: none !important;
-    }
-    
-    /* Hide any bottom floating elements */
-    .css-1outpf7,
-    .css-1lcbmhc,
-    .css-1y4p8pa,
-    .css-12ttj6m,
-    .css-1inwz65 {
-        display: none !important;
-    }
-    
-    /* Target specific bottom-right elements ONLY */
-    .css-1y4p8pa > div,
-    .css-12ttj6m > div {
-        display: none !important;
-    }
-    
-    /* Specific bottom elements only */
-    div[style*="position: fixed"][style*="bottom: 16px"][style*="right"],
-    div[style*="position: fixed"][style*="bottom: 0px"][style*="right"],
-    div[class*="viewerBadge"],
-    div[class*="toolbar"] {
-        display: none !important;
-    }
-    
-    /* Hide by content - target links with streamlit */
-    a[href*="streamlit.io"],
-    img[alt*="Streamlit"] {
+    a[href*="streamlit.io"] {
         display: none !important;
     }
     
@@ -196,98 +84,26 @@ st.markdown("""
 </style>
 
 <script>
-// Aggressive removal of all bottom elements and toolbars (CLOUD + LOCAL)
-function removeStreamlitElements() {
-    const elementsToRemove = [
-        // Toolbar and deploy elements
+// Minimal safe element removal
+function hideStreamlitBranding() {
+    // Only hide specific branding elements
+    const elementsToHide = [
         '.viewerBadge_container__1QSob',
-        '.viewerBadge_link__1S137',
         '[data-testid="stToolbar"]',
-        '[data-testid="manage-app-button"]',
-        '.stToolbar',
-        '.stDeployButton',
-        'header[data-testid="stHeader"]',
-        
-        // Profile and status elements
-        '.css-1kyxreq',
-        '.css-2trqyj', 
-        '.css-1v3fvcr',
-        '.css-vk3wp9',
-        '.css-12oz5g7',
-        '.css-1n76uvr',
-        '.css-1wbqy5l',
-        '.stStatusWidget',
-        '.css-1dp5vir',
-        '.css-1544g2n',
-        '.css-1d391kg',
-        '.css-18ni7ap',
-        '.css-qrbaxs',
-        
-        // Bottom floating elements
-        '.css-1outpf7',
-        '.css-1lcbmhc',
-        '.css-1y4p8pa',
-        '.css-12ttj6m',
-        '.css-1inwz65',
-        
-        // STREAMLIT CLOUD SPECIFIC
-        '.css-1rs6os.e1fqkh3o3',
-        '.css-18ni7ap.e1fqkh3o1',
-        '.css-1inwz65.e1fqkh3o4',
-        '.css-1lcbmhc.e1fqkh3o10',
-        '.css-1outpf7.e1fqkh3o11',
-        '.css-cio0fg',
-        '.css-1fb8w7d',
-        '.toolbar',
-        '.stAppToolbar'
+        'a[href*="streamlit.io"]'
     ];
     
-    elementsToRemove.forEach(selector => {
+    elementsToHide.forEach(selector => {
         const elements = document.querySelectorAll(selector);
         elements.forEach(el => {
-            if (el) {
-                el.style.display = 'none !important';
-                el.remove();
-            }
+            if (el) el.style.display = 'none';
         });
     });
-    
-    // Remove specific bottom-right positioned elements only
-    const bottomElements = document.querySelectorAll('div');
-    bottomElements.forEach(el => {
-        const style = window.getComputedStyle(el);
-        
-        // Only remove if it's bottom-right positioned AND small (likely a badge/toolbar)
-        if (style.position === 'fixed' && 
-            (style.bottom === '0px' || style.bottom === '16px') &&
-            (style.right === '0px' || style.right === '16px') &&
-            el.offsetWidth < 200 && el.offsetHeight < 100) {
-            el.style.display = 'none';
-        }
-        
-        // Remove by specific content only
-        const text = el.textContent?.trim().toLowerCase();
-        if (text && (
-            text === 'made with streamlit' ||
-            text.includes('deploy') && text.length < 20
-        )) {
-            el.style.display = 'none';
-        }
-    });
-    
-    // Remove Streamlit links specifically
-    const streamlitLinks = document.querySelectorAll('a[href*="streamlit.io"]');
-    streamlitLinks.forEach(el => el.style.display = 'none');
 }
 
-// Run immediately and then repeatedly
-removeStreamlitElements();
-setTimeout(removeStreamlitElements, 1000);
-setTimeout(removeStreamlitElements, 3000);
-
-// Also run when page changes
-const observer = new MutationObserver(removeStreamlitElements);
-observer.observe(document.body, { childList: true, subtree: true });
+// Run once
+hideStreamlitBranding();
+setTimeout(hideStreamlitBranding, 1000);
 </script>
 """, unsafe_allow_html=True)
 
