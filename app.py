@@ -41,17 +41,9 @@ st.markdown("""
         color: #000000 !important;
     }
     
-    /* Force all headers to be dark */
-    h1, h2, h3, h4, h5, h6, .stTitle, [data-testid="stHeader"] {
-        color: #000000 !important;
-        font-weight: bold !important;
-    }
+  
     
-    /* Force all labels and text to be dark */
-    label, p, span, div, .stMarkdown, .stText {
-        color: #000000 !important;
-    }
-    
+   
    
     
     /* Force input text to be dark */
