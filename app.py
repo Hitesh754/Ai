@@ -296,7 +296,7 @@ observer.observe(document.body, { childList: true, subtree: true });
 """, unsafe_allow_html=True)
 
 # --- App Title ---
-st.title("🍴 Modern Meal Planner")
+st.title("🍴 Modern Meal Planner")  # Force deployment refresh
 
 # --- User Form ---
 st.header("Generate Personalized Meal Plan")
