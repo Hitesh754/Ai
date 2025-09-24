@@ -7,7 +7,7 @@ import pandas as pd
 import streamlit as st
 
 # Custom modules
-import utils
+import meal_utils as utils
 import gemini_api
 
 import plotly.graph_objects as go
