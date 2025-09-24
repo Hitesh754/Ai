@@ -77,16 +77,31 @@ st.markdown("""
         color: #000000 !important;
     }
     
-    /* Style buttons */
-    .stButton > button {
+    /* Style ALL buttons including form submit buttons */
+    .stButton > button, .stFormSubmitButton > button, button[kind="primary"], button[type="submit"] {
         background-color: #4CAF50 !important; 
         color: #ffffff !important; 
         border-radius: 8px !important;
         border: none !important;
         padding: 0.5rem 1rem !important;
         font-weight: 600 !important;
+        font-size: 16px !important;
     }
-    .stButton > button:hover {
+    .stButton > button:hover, .stFormSubmitButton > button:hover, button[kind="primary"]:hover, button[type="submit"]:hover {
+        background-color: #45a049 !important;
+    }
+    
+    /* Target form submit button specifically */
+    .stForm button {
+        background-color: #4CAF50 !important; 
+        color: #ffffff !important; 
+        border-radius: 8px !important;
+        border: none !important;
+        padding: 0.75rem 1.5rem !important;
+        font-weight: 600 !important;
+        font-size: 16px !important;
+    }
+    .stForm button:hover {
         background-color: #45a049 !important;
     }
     
