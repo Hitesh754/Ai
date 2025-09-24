@@ -134,6 +134,21 @@ st.markdown("""
         background-color: #ffffff !important;
     }
     
+    /* More aggressive table fixes */
+    div[data-testid="stDataFrame"], div[data-testid="stDataFrame"] > div,
+    div[data-testid="stDataFrame"] table, div[data-testid="stDataFrame"] tbody,
+    div[data-testid="stDataFrame"] thead {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    /* Force all table cells */
+    div[data-testid="stDataFrame"] td, div[data-testid="stDataFrame"] th {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #ddd !important;
+    }
+    
     /* Style ALL buttons including form submit buttons */
     .stButton > button, .stFormSubmitButton > button, button[kind="primary"], button[type="submit"] {
         background-color: #4CAF50 !important; 
@@ -282,16 +297,10 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
         title="Weekly Nutrition Overview",
         plot_bgcolor='white',
         paper_bgcolor='white',
-        font=dict(color='black', size=14),
-        xaxis=dict(
-            tickfont=dict(color='black', size=12),
-            titlefont=dict(color='black', size=14)
-        ),
-        yaxis=dict(
-            tickfont=dict(color='black', size=12),
-            titlefont=dict(color='black', size=14)
-        )
+        font=dict(color='black')
     )
+    fig_weekly.update_xaxes(tickfont=dict(color='black', size=12))
+    fig_weekly.update_yaxes(tickfont=dict(color='black', size=12))
     st.plotly_chart(fig_weekly, use_container_width=True, config={"displayModeBar": False})
 
 # --- Grocery List ---
