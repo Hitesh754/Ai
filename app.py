@@ -111,8 +111,19 @@ st.markdown("""
         color: #000000 !important;
     }
     
-    /* Simple table styling - just make text visible */
-    .stDataFrame {
+    /* Fix tables - white background with black text */
+    .stDataFrame table {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    .stDataFrame th {
+        background-color: #f5f5f5 !important;
+        color: #000000 !important;
+    }
+    
+    .stDataFrame td {
+        background-color: #ffffff !important;
         color: #000000 !important;
     }
     
@@ -230,7 +241,8 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
                 title_x=0.5,
                 plot_bgcolor='white',
                 paper_bgcolor='white',
-                font=dict(color='black')
+                font=dict(color='black', size=16, family='Arial'),
+                title_font=dict(color='black', size=20)
             )
             st.plotly_chart(fig_macros, use_container_width=True, config={"displayModeBar": False})
 
@@ -264,7 +276,10 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
         title="Weekly Nutrition Overview",
         plot_bgcolor='white',
         paper_bgcolor='white',
-        font=dict(color='black')
+        font=dict(color='black', size=14, family='Arial'),
+        title_font=dict(color='black', size=18),
+        xaxis=dict(tickfont=dict(color='black', size=12)),
+        yaxis=dict(tickfont=dict(color='black', size=12))
     )
     st.plotly_chart(fig_weekly, use_container_width=True, config={"displayModeBar": False})
 
