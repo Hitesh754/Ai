@@ -36,7 +36,19 @@ if not GOOGLE_API_KEY:
 st.markdown("""
 <style>
     .stApp {
-        background-color: white !important;
+        background-color: #fff !important;
+        color: #222 !important;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        color: #222 !important;
+        font-weight: 700 !important;
+    }
+    label, .stTextInput label, .stNumberInput label, .stSelectbox label, .stRadio label, .stMultiSelect label {
+        color: #222 !important;
+        font-weight: 500 !important;
+    }
+    .stMarkdown, .stForm, .stForm label, .stForm input, .stForm select, .stForm textarea {
+        color: #222 !important;
     }
     .stButton > button {
         background-color: #4CAF50; 
