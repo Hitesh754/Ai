@@ -135,15 +135,13 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Hide bottom status bar and profile */
+    /* Hide bottom status bar and profile - SPECIFIC ONLY */
     .stStatusWidget,
     .css-1dp5vir,
-    .css-17ziqus,
     .css-1544g2n,
     .css-1d391kg,
     .css-18ni7ap,
-    .css-qrbaxs,
-    div[data-stale="false"] {
+    .css-qrbaxs {
         display: none !important;
     }
     
@@ -156,11 +154,9 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Target specific bottom-right elements */
+    /* Target specific bottom-right elements ONLY */
     .css-1y4p8pa > div,
-    .css-12ttj6m > div,
-    div[style*="position: fixed"][style*="bottom"],
-    div[style*="position: absolute"][style*="bottom"] {
+    .css-12ttj6m > div {
         display: none !important;
     }
     
@@ -358,7 +354,7 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
             
             if meal_rows:
                 df = pd.DataFrame(meal_rows)
-                st.dataframe(df, hide_index=True, use_container_width=True)
+                st.dataframe(df, hide_index=True, width="stretch")
 
             # Macro pie chart
             fig_macros = go.Figure(
@@ -370,7 +366,7 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
                 )]
             )
             fig_macros.update_layout(title_text="Macros Breakdown", title_x=0.5)
-            st.plotly_chart(fig_macros, use_container_width=True)
+            st.plotly_chart(fig_macros, width="stretch")
 
             # Daily totals
             c1, c2, c3, c4 = st.columns(4)
@@ -396,7 +392,7 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
     fig_weekly.add_trace(go.Bar(name="Carbs", x=weekly_df["Day"], y=weekly_df["Carbs"], marker_color="#58508D"))
     fig_weekly.add_trace(go.Bar(name="Fat", x=weekly_df["Day"], y=weekly_df["Fat"], marker_color="#FFA600"))
     fig_weekly.update_layout(barmode='group', xaxis_title="Day", yaxis_title="Amount", title="Weekly Nutrition Overview")
-    st.plotly_chart(fig_weekly, use_container_width=True)
+    st.plotly_chart(fig_weekly, width="stretch")
 
 # --- Grocery List ---
 st.markdown("---")
