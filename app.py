@@ -80,13 +80,117 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Hide red crown and profile elements */
+    /* Hide red crown and profile elements - COMPREHENSIVE */
     .css-1kyxreq, .css-2trqyj, .css-1v3fvcr {
         display: none !important;
     }
     
-    /* Hide ViewerBadge (red crown) */
-    .viewerBadge_container__1QSob {
+    /* Hide ViewerBadge (red crown) - ALL VARIANTS */
+    .viewerBadge_container__1QSob,
+    .viewerBadge_link__1S137,
+    [data-testid="stToolbar"],
+    [data-testid="manage-app-button"],
+    .stToolbar,
+    .stDeployButton,
+    .css-vk3wp9,
+    .css-12oz5g7,
+    .css-1n76uvr,
+    .css-1wbqy5l {
+        display: none !important;
+    }
+    
+    /* STREAMLIT CLOUD SPECIFIC - Hide deployment elements */
+    .stAppViewContainer > div:last-child,
+    .stApp > div:last-child,
+    div[data-testid="stSidebar"] + div + div,
+    .main > div:last-child,
+    .stAppEmbeddingId-root div:last-child {
+        display: none !important;
+    }
+    
+    /* Hide Streamlit Cloud footer and profile */
+    .css-1rs6os.e1fqkh3o3,
+    .css-1d391kg,
+    .css-18ni7ap.e1fqkh3o1,
+    .css-qrbaxs,
+    .css-1inwz65.e1fqkh3o4,
+    .css-1lcbmhc.e1fqkh3o10,
+    .css-1outpf7.e1fqkh3o11 {
+        display: none !important;
+    }
+    
+    /* Hide "Made with Streamlit" cloud version */
+    a[href*="streamlit.io"],
+    a[target="_blank"][href*="streamlit"],
+    .css-cio0fg,
+    .css-1fb8w7d {
+        display: none !important;
+    }
+    
+    /* Hide cloud-specific toolbar */
+    .toolbar,
+    .stAppToolbar,
+    [class*="toolbar"],
+    [class*="Toolbar"] {
+        display: none !important;
+    }
+    
+    /* Hide bottom status bar and profile */
+    .stStatusWidget,
+    .css-1dp5vir,
+    .css-17ziqus,
+    .css-1544g2n,
+    .css-1d391kg,
+    .css-18ni7ap,
+    .css-qrbaxs,
+    div[data-stale="false"] {
+        display: none !important;
+    }
+    
+    /* Hide any bottom floating elements */
+    .css-1outpf7,
+    .css-1lcbmhc,
+    .css-1y4p8pa,
+    .css-12ttj6m,
+    .css-1inwz65 {
+        display: none !important;
+    }
+    
+    /* Target specific bottom-right elements */
+    .css-1y4p8pa > div,
+    .css-12ttj6m > div,
+    div[style*="position: fixed"][style*="bottom"],
+    div[style*="position: absolute"][style*="bottom"] {
+        display: none !important;
+    }
+    
+    /* NUCLEAR OPTION - Hide ALL bottom positioned elements */
+    div[style*="position: fixed"][style*="bottom: 16px"],
+    div[style*="position: fixed"][style*="bottom: 0px"],
+    div[style*="position: absolute"][style*="bottom: 16px"],
+    div[style*="position: absolute"][style*="bottom: 0px"],
+    div[style*="z-index"][style*="bottom"],
+    *[style*="bottom: 16px"],
+    *[style*="bottom: 0px"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        width: 0 !important;
+    }
+    
+    /* Hide by content - target links with streamlit */
+    a[href*="streamlit.io"],
+    img[alt*="Streamlit"],
+    *[title*="Streamlit"] {
+        display: none !important;
+    }
+    
+    /* Force hide last child elements that might contain footer */
+    .stApp > div:last-child > div:last-child,
+    .main .block-container ~ div,
+    body > div:last-child,
+    #root > div:last-child {
         display: none !important;
     }
     
@@ -112,24 +216,107 @@ st.markdown("""
 </style>
 
 <script>
-// Remove any remaining deployment elements
-setTimeout(function() {
-    // Remove GitHub profile and crown elements
+// Aggressive removal of all bottom elements and toolbars (CLOUD + LOCAL)
+function removeStreamlitElements() {
     const elementsToRemove = [
+        // Toolbar and deploy elements
         '.viewerBadge_container__1QSob',
+        '.viewerBadge_link__1S137',
+        '[data-testid="stToolbar"]',
+        '[data-testid="manage-app-button"]',
+        '.stToolbar',
+        '.stDeployButton',
+        'header[data-testid="stHeader"]',
+        
+        // Profile and status elements
         '.css-1kyxreq',
         '.css-2trqyj', 
         '.css-1v3fvcr',
-        '[data-testid="stToolbar"]',
-        '.stDeployButton',
-        'header[data-testid="stHeader"]'
+        '.css-vk3wp9',
+        '.css-12oz5g7',
+        '.css-1n76uvr',
+        '.css-1wbqy5l',
+        '.stStatusWidget',
+        '.css-1dp5vir',
+        '.css-1544g2n',
+        '.css-1d391kg',
+        '.css-18ni7ap',
+        '.css-qrbaxs',
+        
+        // Bottom floating elements
+        '.css-1outpf7',
+        '.css-1lcbmhc',
+        '.css-1y4p8pa',
+        '.css-12ttj6m',
+        '.css-1inwz65',
+        
+        // STREAMLIT CLOUD SPECIFIC
+        '.css-1rs6os.e1fqkh3o3',
+        '.css-18ni7ap.e1fqkh3o1',
+        '.css-1inwz65.e1fqkh3o4',
+        '.css-1lcbmhc.e1fqkh3o10',
+        '.css-1outpf7.e1fqkh3o11',
+        '.css-cio0fg',
+        '.css-1fb8w7d',
+        '.toolbar',
+        '.stAppToolbar'
     ];
     
     elementsToRemove.forEach(selector => {
         const elements = document.querySelectorAll(selector);
-        elements.forEach(el => el.remove());
+        elements.forEach(el => {
+            if (el) {
+                el.style.display = 'none !important';
+                el.remove();
+            }
+        });
     });
-}, 1000);
+    
+    // Remove any elements positioned at bottom
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+        const style = window.getComputedStyle(el);
+        
+        // Remove by position
+        if (style.position === 'fixed' && (style.bottom === '0px' || style.bottom === '16px')) {
+            el.style.display = 'none';
+            el.remove();
+        }
+        
+        // Remove by content
+        if (el.textContent && (
+            el.textContent.includes('Made with') ||
+            el.textContent.includes('Streamlit') ||
+            el.textContent.includes('Deploy')
+        )) {
+            el.style.display = 'none';
+            el.remove();
+        }
+        
+        // Remove images and links related to Streamlit
+        if ((el.tagName === 'A' && el.href && el.href.includes('streamlit')) ||
+            (el.tagName === 'IMG' && el.alt && el.alt.includes('Streamlit'))) {
+            el.style.display = 'none';
+            el.remove();
+        }
+    });
+    
+    // Force remove common footer containers
+    const footerContainers = document.querySelectorAll('div[style*="bottom"], footer, .footer');
+    footerContainers.forEach(el => {
+        el.style.display = 'none';
+        el.remove();
+    });
+}
+
+// Run immediately and then repeatedly
+removeStreamlitElements();
+setTimeout(removeStreamlitElements, 1000);
+setTimeout(removeStreamlitElements, 3000);
+
+// Also run when page changes
+const observer = new MutationObserver(removeStreamlitElements);
+observer.observe(document.body, { childList: true, subtree: true });
 </script>
 """, unsafe_allow_html=True)
 
