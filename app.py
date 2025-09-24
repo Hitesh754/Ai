@@ -32,33 +32,55 @@ if not GOOGLE_API_KEY:
     st.info("For local development: Add GOOGLE_API_KEY to your .env file.")
     st.stop()
 
-# --- Simple CSS for clean UI ---
+# --- Force all text to be dark and visible ---
 st.markdown("""
 <style>
-    .stApp {
-        background-color: #fff !important;
-        color: #222 !important;
+    /* Force white background and dark text everywhere */
+    .stApp, .main, .block-container, div[data-testid="stAppViewContainer"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
     }
-    h1, h2, h3, h4, h5, h6 {
-        color: #222 !important;
-        font-weight: 700 !important;
+    
+    /* Force all headers to be dark */
+    h1, h2, h3, h4, h5, h6, .stTitle, [data-testid="stHeader"] {
+        color: #000000 !important;
+        font-weight: bold !important;
     }
-    label, .stTextInput label, .stNumberInput label, .stSelectbox label, .stRadio label, .stMultiSelect label {
-        color: #222 !important;
+    
+    /* Force all labels and text to be dark */
+    label, p, span, div, .stMarkdown, .stText {
+        color: #000000 !important;
+    }
+    
+    /* Force form elements to be dark */
+    .stTextInput label, .stNumberInput label, .stSelectbox label, 
+    .stRadio label, .stForm label, .stForm div, .stForm span {
+        color: #000000 !important;
         font-weight: 500 !important;
     }
-    .stMarkdown, .stForm, .stForm label, .stForm input, .stForm select, .stForm textarea {
-        color: #222 !important;
+    
+    /* Force input text to be dark */
+    input, select, textarea {
+        color: #000000 !important;
+        background-color: #ffffff !important;
     }
+    
+    /* Style buttons */
     .stButton > button {
-        background-color: #4CAF50; 
-        color: white; 
-        border-radius: 8px;
-        border: none;
-        padding: 0.5rem 1rem;
+        background-color: #4CAF50 !important; 
+        color: #ffffff !important; 
+        border-radius: 8px !important;
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+        font-weight: 600 !important;
     }
     .stButton > button:hover {
-        background-color: #45a049;
+        background-color: #45a049 !important;
+    }
+    
+    /* Override any theme colors */
+    * {
+        color: inherit !important;
     }
 </style>
 """, unsafe_allow_html=True)
