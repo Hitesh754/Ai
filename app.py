@@ -111,6 +111,29 @@ st.markdown("""
         color: #000000 !important;
     }
     
+    /* Fix dataframe tables - force white background and dark text */
+    .stDataFrame, .stDataFrame > div, .stDataFrame table {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    /* Fix dataframe headers and cells */
+    .stDataFrame th, .stDataFrame td {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-color: #ddd !important;
+    }
+    
+    /* Fix dataframe header row */
+    .stDataFrame thead tr {
+        background-color: #f8f9fa !important;
+    }
+    
+    /* Fix dataframe body rows */
+    .stDataFrame tbody tr {
+        background-color: #ffffff !important;
+    }
+    
     /* Style ALL buttons including form submit buttons */
     .stButton > button, .stFormSubmitButton > button, button[kind="primary"], button[type="submit"] {
         background-color: #4CAF50 !important; 
@@ -259,7 +282,15 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
         title="Weekly Nutrition Overview",
         plot_bgcolor='white',
         paper_bgcolor='white',
-        font=dict(color='black')
+        font=dict(color='black', size=14),
+        xaxis=dict(
+            tickfont=dict(color='black', size=12),
+            titlefont=dict(color='black', size=14)
+        ),
+        yaxis=dict(
+            tickfont=dict(color='black', size=12),
+            titlefont=dict(color='black', size=14)
+        )
     )
     st.plotly_chart(fig_weekly, use_container_width=True, config={"displayModeBar": False})
 
