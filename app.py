@@ -164,33 +164,17 @@ st.markdown("""
         display: none !important;
     }
     
-    /* NUCLEAR OPTION - Hide ALL bottom positioned elements */
-    div[style*="position: fixed"][style*="bottom: 16px"],
-    div[style*="position: fixed"][style*="bottom: 0px"],
-    div[style*="position: absolute"][style*="bottom: 16px"],
-    div[style*="position: absolute"][style*="bottom: 0px"],
-    div[style*="z-index"][style*="bottom"],
-    *[style*="bottom: 16px"],
-    *[style*="bottom: 0px"] {
+    /* Specific bottom elements only */
+    div[style*="position: fixed"][style*="bottom: 16px"][style*="right"],
+    div[style*="position: fixed"][style*="bottom: 0px"][style*="right"],
+    div[class*="viewerBadge"],
+    div[class*="toolbar"] {
         display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        height: 0 !important;
-        width: 0 !important;
     }
     
     /* Hide by content - target links with streamlit */
     a[href*="streamlit.io"],
-    img[alt*="Streamlit"],
-    *[title*="Streamlit"] {
-        display: none !important;
-    }
-    
-    /* Force hide last child elements that might contain footer */
-    .stApp > div:last-child > div:last-child,
-    .main .block-container ~ div,
-    body > div:last-child,
-    #root > div:last-child {
+    img[alt*="Streamlit"] {
         display: none !important;
     }
     
@@ -272,41 +256,32 @@ function removeStreamlitElements() {
         });
     });
     
-    // Remove any elements positioned at bottom
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(el => {
+    // Remove specific bottom-right positioned elements only
+    const bottomElements = document.querySelectorAll('div');
+    bottomElements.forEach(el => {
         const style = window.getComputedStyle(el);
         
-        // Remove by position
-        if (style.position === 'fixed' && (style.bottom === '0px' || style.bottom === '16px')) {
+        // Only remove if it's bottom-right positioned AND small (likely a badge/toolbar)
+        if (style.position === 'fixed' && 
+            (style.bottom === '0px' || style.bottom === '16px') &&
+            (style.right === '0px' || style.right === '16px') &&
+            el.offsetWidth < 200 && el.offsetHeight < 100) {
             el.style.display = 'none';
-            el.remove();
         }
         
-        // Remove by content
-        if (el.textContent && (
-            el.textContent.includes('Made with') ||
-            el.textContent.includes('Streamlit') ||
-            el.textContent.includes('Deploy')
+        // Remove by specific content only
+        const text = el.textContent?.trim().toLowerCase();
+        if (text && (
+            text === 'made with streamlit' ||
+            text.includes('deploy') && text.length < 20
         )) {
             el.style.display = 'none';
-            el.remove();
-        }
-        
-        // Remove images and links related to Streamlit
-        if ((el.tagName === 'A' && el.href && el.href.includes('streamlit')) ||
-            (el.tagName === 'IMG' && el.alt && el.alt.includes('Streamlit'))) {
-            el.style.display = 'none';
-            el.remove();
         }
     });
     
-    // Force remove common footer containers
-    const footerContainers = document.querySelectorAll('div[style*="bottom"], footer, .footer');
-    footerContainers.forEach(el => {
-        el.style.display = 'none';
-        el.remove();
-    });
+    // Remove Streamlit links specifically
+    const streamlitLinks = document.querySelectorAll('a[href*="streamlit.io"]');
+    streamlitLinks.forEach(el => el.style.display = 'none');
 }
 
 // Run immediately and then repeatedly
