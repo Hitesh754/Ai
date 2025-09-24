@@ -99,6 +99,18 @@ st.markdown("""
         color: #000000 !important;
     }
     
+    /* Aggressive fix for the specific dark dropdown */
+    .stMultiSelect div[data-baseweb="select"] > div {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    /* Target the inner select element directly */
+    div[data-baseweb="select"] span, div[data-baseweb="select"] > div > div {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
     /* Style ALL buttons including form submit buttons */
     .stButton > button, .stFormSubmitButton > button, button[kind="primary"], button[type="submit"] {
         background-color: #4CAF50 !important; 
