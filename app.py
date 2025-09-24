@@ -32,132 +32,18 @@ if not GOOGLE_API_KEY:
     st.info("For local development: Add GOOGLE_API_KEY to your .env file.")
     st.stop()
 
-# --- Clean UI Styling ---
+# --- Simple green buttons only ---
 st.markdown("""
 <style>
-    /* Hide dark header */
-    header[data-testid="stHeader"] {
-        display: none !important;
+    .stButton > button, .stFormSubmitButton > button {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 8px;
+        border: none;
+        padding: 0.5rem 1rem;
     }
-    
-    /* Force white background and dark text everywhere */
-    .stApp, .main, .block-container, div[data-testid="stAppViewContainer"] {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-        padding-top: 1rem !important;
-    }
-    
-    /* Force all headers to be dark */
-    h1, h2, h3, h4, h5, h6 {
-        color: #000000 !important;
-        font-weight: bold !important;
-    }
-    
-    /* Force all labels and text to be dark */
-    label, p, span, div, .stMarkdown, .stText {
-        color: #000000 !important;
-    }
-    
-    /* Force form elements to be dark */
-    .stTextInput label, .stNumberInput label, .stSelectbox label, 
-    .stRadio label, .stForm label {
-        color: #000000 !important;
-        font-weight: 500 !important;
-    }
-    
-    /* Force input text to be dark with white background */
-    input, select, textarea {
-        color: #000000 !important;
-        background-color: #ffffff !important;
-    }
-    
-    /* Style dropdowns - comprehensive fix */
-    .stSelectbox > div > div, .stSelectbox div[data-baseweb="select"], 
-    .stMultiSelect > div > div, .stMultiSelect div[data-baseweb="select"] {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-        border: 1px solid #ccc !important;
-    }
-    
-    /* Style dropdown options */
-    .stSelectbox div[data-baseweb="popover"] div, 
-    .stMultiSelect div[data-baseweb="popover"] div {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    /* Style dropdown text */
-    .stSelectbox div[data-testid="stSelectbox"] div,
-    .stMultiSelect div[data-testid="stMultiSelect"] div {
-        color: #000000 !important;
-        background-color: #ffffff !important;
-    }
-    
-    /* Force multiselect styling */
-    div[data-baseweb="select"] {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    /* Aggressive fix for the specific dark dropdown */
-    .stMultiSelect div[data-baseweb="select"] > div {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    /* Target the inner select element directly */
-    div[data-baseweb="select"] span, div[data-baseweb="select"] > div > div {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    /* Fix tables - white background with black text */
-    .stDataFrame table {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    .stDataFrame th {
-        background-color: #f5f5f5 !important;
-        color: #000000 !important;
-    }
-    
-    .stDataFrame td {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    /* Style ALL buttons including form submit buttons */
-    .stButton > button, .stFormSubmitButton > button, button[kind="primary"], button[type="submit"] {
-        background-color: #4CAF50 !important; 
-        color: #ffffff !important; 
-        border-radius: 8px !important;
-        border: none !important;
-        padding: 0.5rem 1rem !important;
-        font-weight: 600 !important;
-        font-size: 16px !important;
-    }
-    .stButton > button:hover, .stFormSubmitButton > button:hover, button[kind="primary"]:hover, button[type="submit"]:hover {
-        background-color: #45a049 !important;
-    }
-    
-    /* Target form submit button specifically */
-    .stForm button {
-        background-color: #4CAF50 !important; 
-        color: #ffffff !important; 
-        border-radius: 8px !important;
-        border: none !important;
-        padding: 0.75rem 1.5rem !important;
-        font-weight: 600 !important;
-        font-size: 16px !important;
-    }
-    .stForm button:hover {
-        background-color: #45a049 !important;
-    }
-    
-    /* Fix radio buttons */
-    .stRadio > div {
-        color: #000000 !important;
+    .stButton > button:hover, .stFormSubmitButton > button:hover {
+        background-color: #45a049;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -238,11 +124,7 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
             )
             fig_macros.update_layout(
                 title_text="Macros Breakdown", 
-                title_x=0.5,
-                plot_bgcolor='white',
-                paper_bgcolor='white',
-                font=dict(color='black', size=16, family='Arial'),
-                title_font=dict(color='black', size=20)
+                title_x=0.5
             )
             st.plotly_chart(fig_macros, use_container_width=True, config={"displayModeBar": False})
 
@@ -273,13 +155,7 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
         barmode='group', 
         xaxis_title="Day", 
         yaxis_title="Amount", 
-        title="Weekly Nutrition Overview",
-        plot_bgcolor='white',
-        paper_bgcolor='white',
-        font=dict(color='black', size=14, family='Arial'),
-        title_font=dict(color='black', size=18),
-        xaxis=dict(tickfont=dict(color='black', size=12)),
-        yaxis=dict(tickfont=dict(color='black', size=12))
+        title="Weekly Nutrition Overview"
     )
     st.plotly_chart(fig_weekly, use_container_width=True, config={"displayModeBar": False})
 
