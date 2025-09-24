@@ -52,12 +52,7 @@ st.markdown("""
         color: #000000 !important;
     }
     
-    /* Force form elements to be dark */
-    .stTextInput label, .stNumberInput label, .stSelectbox label, 
-    .stRadio label, .stForm label, .stForm div, .stForm span {
-        color: #000000 !important;
-        font-weight: 500 !important;
-    }
+   
     
     /* Force input text to be dark */
     input, select, textarea {
