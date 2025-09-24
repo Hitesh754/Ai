@@ -71,8 +71,30 @@ st.markdown("""
         background-color: #ffffff !important;
     }
     
-    /* Style dropdowns */
-    .stSelectbox > div > div {
+    /* Style dropdowns - comprehensive fix */
+    .stSelectbox > div > div, .stSelectbox div[data-baseweb="select"], 
+    .stMultiSelect > div > div, .stMultiSelect div[data-baseweb="select"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #ccc !important;
+    }
+    
+    /* Style dropdown options */
+    .stSelectbox div[data-baseweb="popover"] div, 
+    .stMultiSelect div[data-baseweb="popover"] div {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    /* Style dropdown text */
+    .stSelectbox div[data-testid="stSelectbox"] div,
+    .stMultiSelect div[data-testid="stMultiSelect"] div {
+        color: #000000 !important;
+        background-color: #ffffff !important;
+    }
+    
+    /* Force multiselect styling */
+    div[data-baseweb="select"] {
         background-color: #ffffff !important;
         color: #000000 !important;
     }
