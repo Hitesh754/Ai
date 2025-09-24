@@ -220,8 +220,14 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
                     marker=dict(colors=['#FF6361', '#58508D', '#FFA600'])
                 )]
             )
-            fig_macros.update_layout(title_text="Macros Breakdown", title_x=0.5)
-            st.plotly_chart(fig_macros, width="stretch")
+            fig_macros.update_layout(
+                title_text="Macros Breakdown", 
+                title_x=0.5,
+                plot_bgcolor='white',
+                paper_bgcolor='white',
+                font=dict(color='black')
+            )
+            st.plotly_chart(fig_macros, use_container_width=True, config={"displayModeBar": False})
 
             # Daily totals
             c1, c2, c3, c4 = st.columns(4)
@@ -246,8 +252,16 @@ if 'meal_plan_data' in st.session_state and st.session_state['meal_plan_data']:
     fig_weekly.add_trace(go.Bar(name="Protein", x=weekly_df["Day"], y=weekly_df["Protein"], marker_color="#FF6361"))
     fig_weekly.add_trace(go.Bar(name="Carbs", x=weekly_df["Day"], y=weekly_df["Carbs"], marker_color="#58508D"))
     fig_weekly.add_trace(go.Bar(name="Fat", x=weekly_df["Day"], y=weekly_df["Fat"], marker_color="#FFA600"))
-    fig_weekly.update_layout(barmode='group', xaxis_title="Day", yaxis_title="Amount", title="Weekly Nutrition Overview")
-    st.plotly_chart(fig_weekly, width="stretch")
+    fig_weekly.update_layout(
+        barmode='group', 
+        xaxis_title="Day", 
+        yaxis_title="Amount", 
+        title="Weekly Nutrition Overview",
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        font=dict(color='black')
+    )
+    st.plotly_chart(fig_weekly, use_container_width=True, config={"displayModeBar": False})
 
 # --- Grocery List ---
 st.markdown("---")
