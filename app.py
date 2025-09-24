@@ -32,24 +32,49 @@ if not GOOGLE_API_KEY:
     st.info("For local development: Add GOOGLE_API_KEY to your .env file.")
     st.stop()
 
-# --- Force all text to be dark and visible ---
+# --- Clean UI Styling ---
 st.markdown("""
 <style>
+    /* Hide dark header */
+    header[data-testid="stHeader"] {
+        display: none !important;
+    }
+    
     /* Force white background and dark text everywhere */
     .stApp, .main, .block-container, div[data-testid="stAppViewContainer"] {
         background-color: #ffffff !important;
         color: #000000 !important;
+        padding-top: 1rem !important;
     }
     
-  
+    /* Force all headers to be dark */
+    h1, h2, h3, h4, h5, h6 {
+        color: #000000 !important;
+        font-weight: bold !important;
+    }
     
-   
-   
+    /* Force all labels and text to be dark */
+    label, p, span, div, .stMarkdown, .stText {
+        color: #000000 !important;
+    }
     
-    /* Force input text to be dark */
+    /* Force form elements to be dark */
+    .stTextInput label, .stNumberInput label, .stSelectbox label, 
+    .stRadio label, .stForm label {
+        color: #000000 !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Force input text to be dark with white background */
     input, select, textarea {
         color: #000000 !important;
         background-color: #ffffff !important;
+    }
+    
+    /* Style dropdowns */
+    .stSelectbox > div > div {
+        background-color: #ffffff !important;
+        color: #000000 !important;
     }
     
     /* Style buttons */
@@ -65,9 +90,9 @@ st.markdown("""
         background-color: #45a049 !important;
     }
     
-    /* Override any theme colors */
-    * {
-        color: inherit !important;
+    /* Fix radio buttons */
+    .stRadio > div {
+        color: #000000 !important;
     }
 </style>
 """, unsafe_allow_html=True)
