@@ -1,4 +1,4 @@
-# app.py - Modern Meal Planner with Day Tabs
+# app.py - Modern Meal Planner with Day Tabs - v2.0
 
 import os
 import re
