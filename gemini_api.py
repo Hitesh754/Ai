@@ -56,6 +56,34 @@ def _handle_gemini_http_error(err: requests.exceptions.HTTPError, feature_name: 
         st.caption(f"Raw API error: {raw_text[:280]}")
 
 
+def test_gemini_connection(api_key: str, model_name: str = "gemini-2.0-flash"):
+    """Return (ok, message) after a minimal Gemini API round-trip."""
+    if not api_key:
+        return False, "API key missing"
+
+    api_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+    payload = {
+        "contents": [{"role": "user", "parts": [{"text": "Reply with exactly: OK"}]}],
+        "generationConfig": {"temperature": 0}
+    }
+    headers = {"Content-Type": "application/json"}
+
+    try:
+        response = requests.post(api_url, headers=headers, json=payload, timeout=30)
+        if response.status_code == 200:
+            return True, f"Gemini reachable with model {model_name}"
+
+        message = ""
+        try:
+            message = response.json().get("error", {}).get("message", "")
+        except Exception:
+            message = response.text[:200]
+
+        return False, f"HTTP {response.status_code}: {message[:220]}"
+    except requests.exceptions.RequestException as exc:
+        return False, f"Network/API error: {exc}"
+
+
 if not GOOGLE_API_KEY:
     st.error("❌ Google API key ('google_api_key') not found.")
     st.info("Please configure your API key in Streamlit secrets or .env file.")

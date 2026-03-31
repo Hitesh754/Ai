@@ -3,6 +3,7 @@
 import os
 import re
 import logging
+import hashlib
 import pandas as pd
 import streamlit as st
 
@@ -24,13 +25,39 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 log = logging.getLogger(__name__)
 
 # Import API key from constants (handles both local and deployment scenarios)
-from constants import GOOGLE_API_KEY
+from constants import GOOGLE_API_KEY, GOOGLE_API_KEY_SOURCE
+
+
+def _mask_key_for_debug(key: str) -> str:
+    if not key:
+        return "missing"
+    if len(key) <= 10:
+        return "***"
+    return f"{key[:6]}...{key[-4:]}"
+
+
+def _key_fingerprint(key: str) -> str:
+    if not key:
+        return "n/a"
+    return hashlib.sha256(key.encode("utf-8")).hexdigest()[:12]
 
 if not GOOGLE_API_KEY:
     st.error("⚠️ `google_api_key` not found. Please configure it in Streamlit secrets or .env file.")
     st.info("For Streamlit Cloud: Add your API key in the secrets management section.")
     st.info("For local development: Add GOOGLE_API_KEY to your .env file.")
     st.stop()
+
+with st.expander("API Diagnostics"):
+    st.write(f"Active key source: {GOOGLE_API_KEY_SOURCE}")
+    st.write(f"Active key (masked): {_mask_key_for_debug(GOOGLE_API_KEY)}")
+    st.write(f"Key fingerprint: {_key_fingerprint(GOOGLE_API_KEY)}")
+    if st.button("Test Gemini API Key"):
+        with st.spinner("Testing Gemini API connectivity..."):
+            ok, message = gemini_api.test_gemini_connection(GOOGLE_API_KEY)
+        if ok:
+            st.success(message)
+        else:
+            st.error(message)
 
 # --- Hide top menu and style buttons ---
 st.markdown("""
