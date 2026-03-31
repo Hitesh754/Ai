@@ -9,14 +9,14 @@ import streamlit as st  # Required because st.error/warning are used directly he
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 
-from constants import GOOGLE_API_KEY, USDA_API_KEY, USDA_BASE_URL, EXAMPLE_MEAL_STRUCTURE
+from constants import GROQ_API_KEY, USDA_API_KEY, USDA_BASE_URL, EXAMPLE_MEAL_STRUCTURE
 
 # Configure logger for this module
 log = logging.getLogger(__name__)
 
 
-def _handle_gemini_http_error(err: requests.exceptions.HTTPError, feature_name: str) -> None:
-    """Show user-friendly, actionable Gemini API errors in Streamlit."""
+def _handle_groq_http_error(err: requests.exceptions.HTTPError, feature_name: str) -> None:
+    """Show user-friendly, actionable Groq API errors in Streamlit."""
     response = err.response
     status_code = response.status_code if response is not None else None
 
@@ -31,17 +31,16 @@ def _handle_gemini_http_error(err: requests.exceptions.HTTPError, feature_name: 
             message = ""
 
     lower_message = message.lower()
-    if status_code == 429 and ("quota" in lower_message or "rate" in lower_message):
+    if status_code == 429 and ("rate" in lower_message or "limit" in lower_message):
         st.error(
-            f"❌ {feature_name} failed: Gemini quota exceeded for this API key/project. "
-            "Update billing/quota in Google AI Studio and refresh your Streamlit 'google_api_key' secret."
+            f"❌ {feature_name} failed: Rate limit reached. Groq free tier has generous limits, please wait a moment and try again."
         )
-        st.info("API returned 429 with exhausted quota (often shown as free-tier limit 0).")
+        st.info("For higher limits, visit: https://console.groq.com")
         return
 
     if status_code in (401, 403):
         st.error(
-            f"❌ {feature_name} failed: API key is invalid/restricted or lacks permission for the selected model."
+            f"❌ {feature_name} failed: Groq API key is invalid or expired. Get a new one from https://console.groq.com/keys"
         )
         return
 
@@ -56,22 +55,23 @@ def _handle_gemini_http_error(err: requests.exceptions.HTTPError, feature_name: 
         st.caption(f"Raw API error: {raw_text[:280]}")
 
 
-def test_gemini_connection(api_key: str, model_name: str = "gemini-2.0-flash"):
-    """Return (ok, message) after a minimal Gemini API round-trip."""
+def test_groq_connection(api_key: str):
+    """Return (ok, message) after a minimal Groq API round-trip."""
     if not api_key:
         return False, "API key missing"
 
-    api_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+    api_url = "https://api.groq.com/openai/v1/chat/completions"
     payload = {
-        "contents": [{"role": "user", "parts": [{"text": "Reply with exactly: OK"}]}],
-        "generationConfig": {"temperature": 0}
+        "model": "mixtral-8x7b-32768",
+        "messages": [{"role": "user", "content": "Say: OK"}],
+        "max_tokens": 10
     }
-    headers = {"Content-Type": "application/json"}
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
 
     try:
         response = requests.post(api_url, headers=headers, json=payload, timeout=30)
         if response.status_code == 200:
-            return True, f"Gemini reachable with model {model_name}"
+            return True, "Groq API reachable (mixtral-8x7b-32768)"
 
         message = ""
         try:
@@ -84,9 +84,10 @@ def test_gemini_connection(api_key: str, model_name: str = "gemini-2.0-flash"):
         return False, f"Network/API error: {exc}"
 
 
-if not GOOGLE_API_KEY:
-    st.error("❌ Google API key ('google_api_key') not found.")
-    st.info("Please configure your API key in Streamlit secrets or .env file.")
+if not GROQ_API_KEY:
+    st.error("❌ Groq API key ('groq_api_key') not found.")
+    st.info("Get free API key from: https://console.groq.com/keys")
+    st.info("Add it as 'groq_api_key' in Streamlit secrets or .env file.")
     st.stop()
 
 if not USDA_API_KEY:
@@ -346,7 +347,7 @@ def analyze_image_with_rest(api_key: str, image_bytes: bytes, language: str = "E
 
     except requests.exceptions.HTTPError as e:
         log.error(f"API HTTP Error (Vision): {e}")
-        _handle_gemini_http_error(e, "Image analysis")
+        _handle_groq_http_error(e, "Image analysis")
         return None
     except requests.exceptions.RequestException as e:
         log.error(f"API Request Error (Vision): {e}")

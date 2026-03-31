@@ -30,8 +30,8 @@ if not GOOGLE_API_KEY:
     log.error("GOOGLE_API_KEY not found.")
     exit("API Key not found in .env file. Evaluation cannot proceed.")
 
-# Define API endpoint (using gemini-1.5-flash-latest for potentially cheaper/faster evaluation)
-EVALUATION_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={GOOGLE_API_KEY}"
+# Define API endpoint
+EVALUATION_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GOOGLE_API_KEY}"
 
 def call_gemini_api(prompt):
     """Calls the Gemini API with the given prompt."""

@@ -9,7 +9,7 @@ import streamlit as st
 
 # Custom modules
 import meal_utils as utils
-import gemini_api
+import groq_api
 
 import plotly.graph_objects as go
 
@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 log = logging.getLogger(__name__)
 
 # Import API key from constants (handles both local and deployment scenarios)
-from constants import GOOGLE_API_KEY, GOOGLE_API_KEY_SOURCE
+from constants import GROQ_API_KEY, GROQ_API_KEY_SOURCE
 
 
 def _mask_key_for_debug(key: str) -> str:
@@ -41,19 +41,20 @@ def _key_fingerprint(key: str) -> str:
         return "n/a"
     return hashlib.sha256(key.encode("utf-8")).hexdigest()[:12]
 
-if not GOOGLE_API_KEY:
-    st.error("⚠️ `google_api_key` not found. Please configure it in Streamlit secrets or .env file.")
+if not GROQ_API_KEY:
+    st.error("⚠️ `groq_api_key` not found. Please configure it in Streamlit secrets or .env file.")
     st.info("For Streamlit Cloud: Add your API key in the secrets management section.")
-    st.info("For local development: Add GOOGLE_API_KEY to your .env file.")
+    st.info("For local development: Add GROQ_API_KEY to your .env file.")
+    st.info("Get free API key from: https://console.groq.com/keys")
     st.stop()
 
 with st.expander("API Diagnostics"):
-    st.write(f"Active key source: {GOOGLE_API_KEY_SOURCE}")
-    st.write(f"Active key (masked): {_mask_key_for_debug(GOOGLE_API_KEY)}")
-    st.write(f"Key fingerprint: {_key_fingerprint(GOOGLE_API_KEY)}")
-    if st.button("Test Gemini API Key"):
-        with st.spinner("Testing Gemini API connectivity..."):
-            ok, message = gemini_api.test_gemini_connection(GOOGLE_API_KEY)
+    st.write(f"Active key source: {GROQ_API_KEY_SOURCE}")
+    st.write(f"Active key (masked): {_mask_key_for_debug(GROQ_API_KEY)}")
+    st.write(f"Key fingerprint: {_key_fingerprint(GROQ_API_KEY)}")
+    if st.button("Test Groq API Key"):
+        with st.spinner("Testing Groq API connectivity..."):
+            ok, message = groq_api.test_groq_connection(GROQ_API_KEY)
         if ok:
             st.success(message)
         else:
@@ -119,7 +120,7 @@ if submitted:
         user_prefs = {"goal": goal, "restrictions": restrictions, "favorites": favorites, "dislikes": dislikes}
 
         with st.spinner("Creating your meal plan..."):
-            meal_plan_dict_result = gemini_api.generate_meal_plan_with_rest(GOOGLE_API_KEY, calculated_calories, user_prefs)
+            meal_plan_dict_result = groq_api.generate_meal_plan_with_rest(GROQ_API_KEY, calculated_calories, user_prefs)
 
         if meal_plan_dict_result and isinstance(meal_plan_dict_result, dict):
             st.session_state['meal_plan_data'] = meal_plan_dict_result
@@ -203,7 +204,7 @@ if st.button("Generate Weekly Grocery List"):
     current_meal_plan_data = st.session_state.get('meal_plan_data')
     if current_meal_plan_data:
         with st.spinner("Creating grocery list..."):
-            grocery_list_md = gemini_api.generate_grocery_list_with_rest(GOOGLE_API_KEY, current_meal_plan_data)
+            grocery_list_md = groq_api.generate_grocery_list_with_rest(GROQ_API_KEY, current_meal_plan_data)
 
         if grocery_list_md:
             st.subheader("🛒 Weekly Grocery List")

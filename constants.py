@@ -14,34 +14,37 @@ def _clean_secret(value):
   return value or None
 
 
-GOOGLE_API_KEY_SOURCE = "missing"
+GROQ_API_KEY_SOURCE = "missing"
 USDA_API_KEY_SOURCE = "missing"
 
 # API Keys - prioritize Streamlit secrets for deployment, fall back to env vars for local
+GROQ_API_KEY = None
+USDA_API_KEY = None
+
 try:
-  google_secret_lc = _clean_secret(st.secrets.get("google_api_key"))
-  google_secret_uc = _clean_secret(st.secrets.get("GOOGLE_API_KEY"))
-  google_env_lc = _clean_secret(os.getenv("google_api_key"))
-  google_env_uc = _clean_secret(os.getenv("GOOGLE_API_KEY"))
+  groq_secret_lc = _clean_secret(st.secrets.get("groq_api_key"))
+  groq_secret_uc = _clean_secret(st.secrets.get("GROQ_API_KEY"))
+  groq_env_lc = _clean_secret(os.getenv("groq_api_key"))
+  groq_env_uc = _clean_secret(os.getenv("GROQ_API_KEY"))
 
   usda_secret_lc = _clean_secret(st.secrets.get("usda_api_key"))
   usda_secret_uc = _clean_secret(st.secrets.get("USDA_API_KEY"))
   usda_env_lc = _clean_secret(os.getenv("usda_api_key"))
   usda_env_uc = _clean_secret(os.getenv("USDA_API_KEY"))
 
-  if google_secret_lc:
-    GOOGLE_API_KEY = google_secret_lc
-    GOOGLE_API_KEY_SOURCE = "streamlit:google_api_key"
-  elif google_secret_uc:
-    GOOGLE_API_KEY = google_secret_uc
-    GOOGLE_API_KEY_SOURCE = "streamlit:GOOGLE_API_KEY"
-  elif google_env_lc:
-    GOOGLE_API_KEY = google_env_lc
-    GOOGLE_API_KEY_SOURCE = "env:google_api_key"
+  if groq_secret_lc:
+    GROQ_API_KEY = groq_secret_lc
+    GROQ_API_KEY_SOURCE = "streamlit:groq_api_key"
+  elif groq_secret_uc:
+    GROQ_API_KEY = groq_secret_uc
+    GROQ_API_KEY_SOURCE = "streamlit:GROQ_API_KEY"
+  elif groq_env_lc:
+    GROQ_API_KEY = groq_env_lc
+    GROQ_API_KEY_SOURCE = "env:groq_api_key"
   else:
-    GOOGLE_API_KEY = google_env_uc
-    if GOOGLE_API_KEY:
-      GOOGLE_API_KEY_SOURCE = "env:GOOGLE_API_KEY"
+    GROQ_API_KEY = groq_env_uc
+    if GROQ_API_KEY:
+      GROQ_API_KEY_SOURCE = "env:GROQ_API_KEY"
 
   if usda_secret_lc:
     USDA_API_KEY = usda_secret_lc
@@ -58,10 +61,10 @@ try:
       USDA_API_KEY_SOURCE = "env:USDA_API_KEY"
 except:
     # Fallback for local development when streamlit secrets are not available
-  GOOGLE_API_KEY = _clean_secret(os.getenv("google_api_key")) or _clean_secret(os.getenv("GOOGLE_API_KEY"))
+  GROQ_API_KEY = _clean_secret(os.getenv("groq_api_key")) or _clean_secret(os.getenv("GROQ_API_KEY"))
   USDA_API_KEY = _clean_secret(os.getenv("usda_api_key")) or _clean_secret(os.getenv("USDA_API_KEY"))
-  if GOOGLE_API_KEY:
-    GOOGLE_API_KEY_SOURCE = "env:fallback"
+  if GROQ_API_KEY:
+    GROQ_API_KEY_SOURCE = "env:fallback"
   if USDA_API_KEY:
     USDA_API_KEY_SOURCE = "env:fallback"
 
