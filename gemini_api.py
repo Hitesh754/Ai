@@ -15,6 +15,47 @@ from constants import GOOGLE_API_KEY, USDA_API_KEY, USDA_BASE_URL, EXAMPLE_MEAL_
 log = logging.getLogger(__name__)
 
 
+def _handle_gemini_http_error(err: requests.exceptions.HTTPError, feature_name: str) -> None:
+    """Show user-friendly, actionable Gemini API errors in Streamlit."""
+    response = err.response
+    status_code = response.status_code if response is not None else None
+
+    message = ""
+    raw_text = ""
+    if response is not None:
+        raw_text = (response.text or "")[:500]
+        try:
+            payload = response.json()
+            message = payload.get("error", {}).get("message", "")
+        except Exception:
+            message = ""
+
+    lower_message = message.lower()
+    if status_code == 429 and ("quota" in lower_message or "rate" in lower_message):
+        st.error(
+            f"❌ {feature_name} failed: Gemini quota exceeded for this API key/project. "
+            "Update billing/quota in Google AI Studio and refresh your Streamlit 'google_api_key' secret."
+        )
+        st.info("API returned 429 with exhausted quota (often shown as free-tier limit 0).")
+        return
+
+    if status_code in (401, 403):
+        st.error(
+            f"❌ {feature_name} failed: API key is invalid/restricted or lacks permission for the selected model."
+        )
+        return
+
+    if status_code:
+        st.error(f"❌ {feature_name} failed with API error {status_code}. Please try again later.")
+    else:
+        st.error(f"❌ {feature_name} failed due to an API error. Please try again later.")
+
+    if message:
+        st.caption(f"API message: {message[:280]}")
+    elif raw_text:
+        st.caption(f"Raw API error: {raw_text[:280]}")
+
+
 if not GOOGLE_API_KEY:
     st.error("❌ Google API key ('google_api_key') not found.")
     st.info("Please configure your API key in Streamlit secrets or .env file.")
@@ -146,7 +187,7 @@ def analyze_image_with_rest(api_key: str, image_bytes: bytes, language: str = "E
         # Using gemini-pro-vision as it's generally preferred for vision tasks now,
         # but you can switch back to gemini-2.0-flash if needed.
         # Check latest model availability/recommendations if unsure.
-        api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GOOGLE_API_KEY}"
+        api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
 
         # Prompt asking for specific JSON structure
         prompt = (
@@ -173,7 +214,7 @@ def analyze_image_with_rest(api_key: str, image_bytes: bytes, language: str = "E
             # "generationConfig": { "temperature": 0.4 }
         }
 
-        log.info(f"Calling Vision API: {api_url}")
+        log.info("Calling Vision API: gemini-2.0-flash generateContent")
         response = requests.post(
             api_url, headers=headers, json=payload, timeout=60)
         log.info(f"Vision API Status Code: {response.status_code}")
@@ -275,6 +316,10 @@ def analyze_image_with_rest(api_key: str, image_bytes: bytes, language: str = "E
                 f"⚠️ Image Analysis Error: Failed to decode AI response data: {e}")
             return None
 
+    except requests.exceptions.HTTPError as e:
+        log.error(f"API HTTP Error (Vision): {e}")
+        _handle_gemini_http_error(e, "Image analysis")
+        return None
     except requests.exceptions.RequestException as e:
         log.error(f"API Request Error (Vision): {e}")
         st.error(
@@ -307,7 +352,7 @@ def generate_meal_plan_with_rest(api_key: str, calorie_target: int, preferences:
 
     try:
         # Using gemini-pro as it's generally better for complex JSON generation than flash
-        api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GOOGLE_API_KEY}"
+        api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
 
         restrictions_str = ', '.join(
             preferences.get('restrictions', [])) or 'None'
@@ -345,7 +390,7 @@ def generate_meal_plan_with_rest(api_key: str, calorie_target: int, preferences:
             "generationConfig": {"temperature": 0.6}
         }
 
-        log.info(f"Calling Text API for meal plan: {api_url}")
+        log.info("Calling Text API for meal plan: gemini-2.0-flash generateContent")
         response = requests.post(
             api_url, headers=headers, json=payload, timeout=180)  # Increased timeout
         log.info(f"Meal Plan API Status Code: {response.status_code}")
@@ -460,6 +505,10 @@ def generate_meal_plan_with_rest(api_key: str, calorie_target: int, preferences:
                 f"⚠️ Meal Plan Error: Failed to decode AI response data: {e}")
             return None
 
+    except requests.exceptions.HTTPError as e:
+        log.error(f"API HTTP Error (Meal Plan): {e}")
+        _handle_gemini_http_error(e, "Meal plan generation")
+        return None
     except requests.exceptions.RequestException as e:
         log.error(f"API Request Error (Meal Plan): {e}")
         st.error(
@@ -555,7 +604,7 @@ def generate_grocery_list_with_rest(api_key: str, meal_plan_dict: dict, language
                 """
 
         # Make API Call (can use flash for this less complex task)
-        api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GOOGLE_API_KEY}"
+        api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
         headers = {"Content-Type": "application/json"}
         payload = {
             "contents": [{"role": "user", "parts": [{"text": prompt}]}],
@@ -621,6 +670,10 @@ def generate_grocery_list_with_rest(api_key: str, meal_plan_dict: dict, language
             log.error("Full API Response: %s", result_json)
             return None
 
+    except requests.exceptions.HTTPError as e:
+        log.error(f"API HTTP Error (Grocery List): {e}")
+        _handle_gemini_http_error(e, "Grocery list generation")
+        return None
     except requests.exceptions.RequestException as e:
         log.error(f"API Request Error (Grocery List): {e}")
         st.error(f"❌ Network Error connecting to AI for grocery list ({e})")

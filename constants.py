@@ -7,12 +7,22 @@ load_dotenv()
 
 # API Keys - prioritize Streamlit secrets for deployment, fall back to env vars for local
 try:
-    GOOGLE_API_KEY = st.secrets.get("google_api_key") or os.getenv("google_api_key")
-    USDA_API_KEY = st.secrets.get("usda_api_key") or os.getenv("usda_api_key")
+  GOOGLE_API_KEY = (
+    st.secrets.get("google_api_key")
+    or st.secrets.get("GOOGLE_API_KEY")
+    or os.getenv("google_api_key")
+    or os.getenv("GOOGLE_API_KEY")
+  )
+  USDA_API_KEY = (
+    st.secrets.get("usda_api_key")
+    or st.secrets.get("USDA_API_KEY")
+    or os.getenv("usda_api_key")
+    or os.getenv("USDA_API_KEY")
+  )
 except:
     # Fallback for local development when streamlit secrets are not available
-    GOOGLE_API_KEY = os.getenv("google_api_key")
-    USDA_API_KEY = os.getenv("usda_api_key")
+  GOOGLE_API_KEY = os.getenv("google_api_key") or os.getenv("GOOGLE_API_KEY")
+  USDA_API_KEY = os.getenv("usda_api_key") or os.getenv("USDA_API_KEY")
 
 USDA_BASE_URL = "https://api.nal.usda.gov/fdc/v1/foods/search"
 
